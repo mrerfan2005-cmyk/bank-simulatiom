@@ -1,0 +1,80 @@
+# ایجاد لیست برای نگهداری حساب‌ها
+accounts = []
+
+# تعداد حساب‌ها
+n = int(input("چند حساب بانکی می‌خواهید ایجاد کنید؟ "))
+
+# دریافت اطلاعات هر حساب
+for i in range(n):
+    name = input(f"نام صاحب حساب {i+1}: ")
+    balance = float(input("موجودی اولیه: "))
+    accounts.append({"name": name, "balance": balance})
+
+# شروع منوی عملیات
+while True:
+    print("\n===== منوی عملیات بانکی =====")
+    print("1. نمایش موجودی همه حساب‌ها")
+    print("2. سپرده‌گذاری در حساب")
+    print("3. برداشت از حساب")
+    print("4. نمایش حساب‌هایی با موجودی بیشتر از میانگین")
+    print("5. خروج")
+    
+    choice = input("انتخاب کنید: ")
+
+    # گزینه 1: نمایش همه حساب‌ها
+    if choice == "1":
+        print("\n--- موجودی حساب‌ها ---")
+        for acc in accounts:
+            print(f"{acc['name']}: {acc['balance']}")
+    
+    # گزینه 2: سپرده‌گذاری
+    elif choice == "2":
+        name = input("نام حساب برای واریز: ")
+        amount = float(input("مبلغ سپرده: "))
+        
+        found = False
+        for acc in accounts:
+            if acc["name"] == name:
+                acc["balance"] += amount
+                print("سپرده‌گذاری انجام شد.")
+                found = True
+                break
+        
+        if not found:
+            print("حساب یافت نشد!")
+
+    # گزینه 3: برداشت
+    elif choice == "3":
+        name = input("نام حساب برای برداشت: ")
+        amount = float(input("مبلغ برداشت: "))
+        
+        found = False
+        for acc in accounts:
+            if acc["name"] == name:
+                if acc["balance"] >= amount:
+                    acc["balance"] -= amount
+                    print("برداشت انجام شد.")
+                else:
+                    print("موجودی کافی نیست!")
+                found = True
+                break
+        
+        if not found:
+            print("حساب یافت نشد!")
+
+    # گزینه 4: حساب‌های بالاتر از میانگین
+    elif choice == "4":
+        avg = sum(acc["balance"] for acc in accounts) / len(accounts)
+        print(f"\nمیانگین موجودی حساب‌ها: {avg}")
+        print("--- حساب‌های با موجودی بیشتر از میانگین ---")
+        for acc in accounts:
+            if acc["balance"] > avg:
+                print(f"{acc['name']}: {acc['balance']}")
+    
+    # گزینه 5: خروج
+    elif choice == "5":
+        print("خروج از برنامه...")
+        break
+    
+    else:
+        print("انتخاب نامعتبر!")
